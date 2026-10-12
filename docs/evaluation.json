@@ -17,7 +17,30 @@
   "smoke_output_tokens": 11,
   "smoke_client_seconds": 8.125,
   "money_cost": null,
-  "r6_core": "offline candidate; no real business success claim",
+  "r6_core": "Real privately audited production experiment completed; portable GitHub adapter itself remains fixture-tested only",
   "raw_protected_text_not_distributed": true,
-  "independent_evaluation_retained_privately": true
+  "independent_evaluation_retained_privately": true,
+  "r6_independent_result": {
+    "formal_calls": 3,
+    "smoke_calls": 1,
+    "retry": 0,
+    "schema_valid": "3/3",
+    "mechanically_usable": "2/3",
+    "primary_necessary": "6/9",
+    "raw_partial_diagnostic": "7/9",
+    "strict_business_success": "2/3",
+    "passed_cases": [
+      "D01 subject and business scope",
+      "D04 month-day and missing information"
+    ],
+    "remaining_case": "D02 missing title citation and treating two website versions and dates as one conflicting event",
+    "formal_input_tokens": 4378,
+    "formal_output_tokens": 1408,
+    "formal_client_seconds": 47.03,
+    "smoke_client_seconds": 8.922,
+    "money_cost": null,
+    "input_subset_composite_intervention": true,
+    "single_component_causal_effect_not_established": true,
+    "held_out_generalization_not_tested": true
+  }
 }
