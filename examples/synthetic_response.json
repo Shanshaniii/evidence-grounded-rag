@@ -1,0 +1,49 @@
+{
+  "answer_support": "evidence_conflicting",
+  "answer": "标题与正文有计划和完成说法，不能确认实际完成；原句只有月日，事件年份待证。",
+  "source_statement": [
+    {
+      "id": "T1",
+      "source_id": "S1#title",
+      "quote": "系统项目已上线",
+      "source_state": "source_reported_completed"
+    },
+    {
+      "id": "T2",
+      "source_id": "S1",
+      "quote": "公告称系统计划于6月18日上线。",
+      "source_state": "source_planned"
+    },
+    {
+      "id": "T3",
+      "source_id": "S1",
+      "quote": "末段称系统已正式上线。",
+      "source_state": "source_reported_completed"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "subject": "系统项目",
+      "project_identity": "公告中的系统项目",
+      "event_state": "event_conflicting",
+      "source_statement": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "explicit_event_date": {
+        "value": "06-18",
+        "precision": "month_day",
+        "evidence": [
+          "T2"
+        ]
+      },
+      "inferred_event_date": null
+    }
+  ],
+  "uncertainties": [
+    "实际是否完成待证",
+    "事件年份待证"
+  ]
+}

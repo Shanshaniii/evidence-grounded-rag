@@ -1,0 +1,236 @@
+{
+  "type": "object",
+  "properties": {
+    "answer_support": {
+      "type": "string",
+      "enum": [
+        "evidence_supported",
+        "evidence_insufficient",
+        "evidence_conflicting"
+      ],
+      "x-aliases": [
+        "answer_status"
+      ]
+    },
+    "answer": {
+      "type": "string",
+      "maxLength": 100,
+      "minLength": 0
+    },
+    "source_statement": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/statement"
+      },
+      "maxItems": 4
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "maxItems": 2
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 120,
+        "minLength": 0
+      },
+      "maxItems": 4
+    }
+  },
+  "required": [
+    "answer_support",
+    "answer",
+    "source_statement",
+    "claims",
+    "uncertainties"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "statement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 16,
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "maxLength": 16,
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1
+        },
+        "source_state": {
+          "type": "string",
+          "enum": [
+            "source_planned",
+            "source_reported_completed",
+            "source_signed",
+            "source_historical",
+            "source_conditional",
+            "source_unknown"
+          ],
+          "x-aliases": [
+            "wording_state"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "source_id",
+        "quote",
+        "source_state"
+      ],
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 16,
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 80,
+          "minLength": 0
+        },
+        "project_identity": {
+          "type": "string",
+          "maxLength": 120,
+          "minLength": 0
+        },
+        "event_state": {
+          "type": "string",
+          "enum": [
+            "event_planned",
+            "event_reported_completed",
+            "event_signed",
+            "event_historical",
+            "event_conditional",
+            "event_unknown",
+            "event_conflicting",
+            "event_uncertain"
+          ],
+          "x-aliases": [
+            "claim_state"
+          ]
+        },
+        "source_statement": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1
+          },
+          "maxItems": 4
+        },
+        "explicit_event_date": {
+          "$ref": "#/$defs/date"
+        },
+        "inferred_event_date": {
+          "$ref": "#/$defs/inference"
+        }
+      },
+      "required": [
+        "id",
+        "subject",
+        "project_identity",
+        "event_state",
+        "source_statement",
+        "explicit_event_date",
+        "inferred_event_date"
+      ],
+      "additionalProperties": false
+    },
+    "date": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "maxLength": 10
+        },
+        "precision": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "year",
+            "month_day",
+            "full_date"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1
+          },
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "value",
+        "precision",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "inference": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "maxLength": 10,
+          "minLength": 0
+        },
+        "rule": {
+          "type": "string",
+          "enum": [
+            "publication_year_plus_month_day"
+          ]
+        },
+        "publication_source_id": {
+          "type": "string",
+          "maxLength": 16,
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1
+          },
+          "maxItems": 4
+        },
+        "uncertain": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "rule",
+        "publication_source_id",
+        "evidence",
+        "uncertain"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
