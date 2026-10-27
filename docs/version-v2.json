@@ -1,0 +1,38 @@
+{
+  "version": "V2.0-demo",
+  "source_revision": "r2.2_quality_20261025",
+  "scope": "Portable offline subset of production collector, diagnostics, locator, checker and renderer. Transport/dispatch/private data excluded.",
+  "original_core_unchanged": true,
+  "public_deltas": [
+    "v2/demo.py public offline adapter",
+    "journal.py durable_bytes helper extracted; no dispatch policy",
+    "synthetic fixture and portable pipeline regression"
+  ],
+  "files_sha256": {
+    "v2/candidate/src/checker_v2.py": "3b8d192da320f8234000239f2b3a4b07426508d2a0a9aed2b30ec3a7cc290056",
+    "v2/candidate/src/make_results_page.py": "d2b602f4097fca306214b69ffeacc958c291d844f855269d4771bc3a008eaa6e",
+    "v2/demo.py": "c4c2317419c66b0b57e353f1d6fa29ea3dc4d20d891ac10893484f2f5ee2493d",
+    "v2/dependencies/E03_dev_runner_v4/src/dev_codec.py": "dfd2734189f1d73296abc1a0b3f44fabed92437fce9f8830c07f9af57d1f2eb4",
+    "v2/dependencies/E03_dev_runner_v4/src/display_safe.py": "b2f0af96e6eebf93d2e5c459a5559e9263b1ec1b4e8a7b01d2ca6c878e2d11c3",
+    "v2/dependencies/E03_dev_runner_v4/src/journal.py": "9de1725bf544fac118a6256532f6d7c780ad3e05a1c3de25e6d33c720390fdaf",
+    "v2/dependencies/E03_dev_runner_v4/src/redaction.py": "ec4f9dd8dba2a79b2923bad0973a3faaa0d97ff8e425fb54591c920722f397a9",
+    "v2/dependencies/E03_dev_runner_v4/src/reviewed/codec.py": "20ae28d3909268854f394fd07c47c6bf7dddbabd40d5819d9d80a74009f347da",
+    "v2/dependencies/E03_dev_runner_v4/src/reviewed/unicode_utils.py": "f4fd1ff9d4ff8a1a9bfadb62a5dfebbe4755565814bcc2e4fddf299a69d8da6d",
+    "v2/dependencies/E03_dev_runner_v4/src/reviewed/validators.py": "ed62bf10a6f0594139570007f48b9baed4bd1842eb442b67fb3889b2da531182",
+    "v2/dependencies/E03_dev_runner_v4/src/tools.py": "e4c7d7de0aef07715890a251c65484beb02bb9d2e54038fe1110f5676b643d1c",
+    "v2/dependencies/E03_RAG_L_v1/src/locator.py": "e799849bd5278e1b5c90276bbd4628fafa465a99657dc3cababd0ff2ceb461e4",
+    "v2/examples/synthetic_cases.json": "474bac19118c89ed0b668eb1cef745a1f7d6f8d20b2b0337a1fc4735a47f9876",
+    "v2/production/docs/schema.json": "cf5fff9ed17f85b0cca896dba02c3d97c1fcf6d0e8093823a3229288e3292373",
+    "v2/production/src/collector_v04.py": "2fb64c608e392d025be25c0571148420f3ef8423990ed266ceccf297798db0a4",
+    "v2/production/src/contract.py": "96ca820fadb52e560645ddd9fa22d97295d54c596b1d7a6fbf04ec3ecca9c05b",
+    "v2/production/src/date_roles.py": "3b5dbca3a031be7b8d45bed2a2fefe7f75c246ce68f20df8645ee87438e833cb",
+    "v2/production/src/diagnostics.py": "b4da9c7dfde171a13b81562addad3adcfd0e47f142c775dcab44dceb71fa0bf9",
+    "v2/production/src/evidence_cards.py": "9c6781efbb1e411a90fa77ab1018dd0dd072bc59e520782836945c37d54e35f9",
+    "v2/production/src/runtime_paths.py": "4969d1a599f4006bb82243fcb958f15bce785067aa809b0ebdc35abf6e3f3e93",
+    "v2/requirements.txt": "bc5cd6133437149181171729e234d4dbf9c5ff1bf01e57be9fe5a8b01d6611da",
+    "v2/tests/test_public_pipeline.py": "547cf4ad5cc55bc2a41fa971066ca52b195e283d8d87776a00f4c00323b66afa",
+    "v2/tests/test_results_page.py": "368c37eed775619503266e18f890511f4caa279d4f8509cdedad9c92141ca233",
+    "v2/tests/test_semantic_fixes_synthetic.py": "87084a20d541ca91a5958f834b9dc49ca643e04c8125812220c89decf296f5fa"
+  },
+  "hash_basis": "File text bytes with CRLF normalized to LF, matching canonical Git text blobs; excludes manifest itself."
+}

@@ -1,0 +1,247 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "answer_support": {
+      "type": "string",
+      "enum": [
+        "evidence_supported",
+        "evidence_insufficient",
+        "evidence_conflicting"
+      ],
+      "x-aliases": [
+        "answer_status"
+      ]
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 100
+    },
+    "source_statement": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/statement"
+      },
+      "maxItems": 6
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      },
+      "maxItems": 2
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 0,
+        "maxLength": 120
+      },
+      "maxItems": 4
+    }
+  },
+  "required": [
+    "answer_support",
+    "answer",
+    "source_statement",
+    "claims",
+    "uncertainties"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:rag:model-answer:v1:bundle-reconstruction",
+  "$defs": {
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "source_state": {
+          "type": "string",
+          "enum": [
+            "source_planned",
+            "source_reported_completed",
+            "source_signed",
+            "source_historical",
+            "source_conditional",
+            "source_unknown"
+          ],
+          "x-aliases": [
+            "wording_state"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "source_id",
+        "quote",
+        "source_state"
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 80
+        },
+        "project_identity": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 120
+        },
+        "event_state": {
+          "type": "string",
+          "enum": [
+            "event_planned",
+            "event_reported_completed",
+            "event_construction_started",
+            "event_signed",
+            "event_historical",
+            "event_conditional",
+            "event_unknown",
+            "event_conflicting",
+            "event_uncertain"
+          ],
+          "x-aliases": [
+            "claim_state"
+          ]
+        },
+        "source_statement": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16
+          },
+          "maxItems": 4
+        },
+        "explicit_event_date": {
+          "$ref": "#/$defs/explicit_event_date"
+        },
+        "inferred_event_date": {
+          "$ref": "#/$defs/inferred_event_date"
+        }
+      },
+      "required": [
+        "id",
+        "subject",
+        "project_identity",
+        "event_state",
+        "source_statement",
+        "explicit_event_date",
+        "inferred_event_date"
+      ]
+    },
+    "explicit_event_date": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "minLength": 0,
+          "maxLength": 10
+        },
+        "precision": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "year",
+            "month_day",
+            "full_date"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16
+          },
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "value",
+        "precision",
+        "evidence"
+      ]
+    },
+    "inferred_event_date": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 10
+        },
+        "rule": {
+          "type": "string",
+          "enum": [
+            "publication_year_plus_month_day"
+          ]
+        },
+        "publication_source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16
+          },
+          "maxItems": 4
+        },
+        "uncertain": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "rule",
+        "publication_source_id",
+        "evidence",
+        "uncertain"
+      ]
+    }
+  },
+  "x-schema-origin": {
+    "status": "reconstructed_from_supplied_generated_contract",
+    "source": "evidence/prepared/*.wire.json system JSON contract",
+    "aliases": "three syntax-only aliases restored from verified local original schema",
+    "model_fields_unchanged": true,
+    "local_original_schema_sha256": "f95e9c46986c738ff5acc23c1ce5c73e2b791bee6c08cfacb486d9049ba03465"
+  }
+}

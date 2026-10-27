@@ -1,0 +1,146 @@
+[
+  {
+    "case_id": "SYNTHETIC_REVIEW",
+    "prompt": {
+      "question": "项目A发生了什么，何时发生？",
+      "sources": {
+        "S1": {
+          "title": "项目A消息",
+          "folder": "甲公司"
+        }
+      },
+      "cards": [
+        {
+          "id": "K1",
+          "src": "S1",
+          "start": 0,
+          "end": 18,
+          "text": "甲公司项目A于8月8日举行开工仪式。",
+          "role": "body"
+        }
+      ]
+    },
+    "answer": {
+      "answer_support": "evidence_supported",
+      "answer": "甲公司项目A于8月8日举行开工仪式。",
+      "source_statement": [
+        {
+          "id": "E1",
+          "source_id": "S1",
+          "quote": "甲公司项目A于8月8日举行开工仪式。",
+          "source_state": "source_unknown"
+        }
+      ],
+      "claims": [
+        {
+          "id": "C1",
+          "subject": "甲公司",
+          "project_identity": "项目A",
+          "event_state": "event_construction_started",
+          "source_statement": [
+            "E1"
+          ],
+          "explicit_event_date": {
+            "value": "08-08",
+            "precision": "month_day",
+            "evidence": [
+              "E1"
+            ]
+          },
+          "inferred_event_date": null
+        }
+      ],
+      "uncertainties": [
+        "原文未给出年份，未推断为发布日期年份。"
+      ]
+    },
+    "source_context": {
+      "sources": {
+        "S1": {
+          "title": "项目A消息",
+          "folder": "甲公司"
+        }
+      },
+      "registry": [
+        [
+          "S1",
+          0,
+          18,
+          "甲公司项目A于8月8日举行开工仪式。"
+        ]
+      ]
+    }
+  },
+  {
+    "case_id": "SYNTHETIC_BLOCKED",
+    "prompt": {
+      "question": "项目A发生了什么，何时发生？",
+      "sources": {
+        "S1": {
+          "title": "项目A消息",
+          "folder": "甲公司"
+        }
+      },
+      "cards": [
+        {
+          "id": "K1",
+          "src": "S1",
+          "start": 0,
+          "end": 18,
+          "text": "甲公司项目A于8月8日举行开工仪式。",
+          "role": "body"
+        }
+      ]
+    },
+    "answer": {
+      "answer_support": "evidence_supported",
+      "answer": "甲公司项目A已正式投产。",
+      "source_statement": [
+        {
+          "id": "E1",
+          "source_id": "S1",
+          "quote": "甲公司项目A于8月8日正式投产。",
+          "source_state": "source_unknown"
+        }
+      ],
+      "claims": [
+        {
+          "id": "C1",
+          "subject": "甲公司",
+          "project_identity": "项目A",
+          "event_state": "event_reported_completed",
+          "source_statement": [
+            "E1"
+          ],
+          "explicit_event_date": {
+            "value": "08-08",
+            "precision": "month_day",
+            "evidence": [
+              "E1"
+            ]
+          },
+          "inferred_event_date": null
+        }
+      ],
+      "uncertainties": [
+        "原文未给出年份，未推断为发布日期年份。"
+      ]
+    },
+    "source_context": {
+      "sources": {
+        "S1": {
+          "title": "项目A消息",
+          "folder": "甲公司"
+        }
+      },
+      "registry": [
+        [
+          "S1",
+          0,
+          18,
+          "甲公司项目A于8月8日举行开工仪式。"
+        ]
+      ]
+    }
+  }
+]
