@@ -1,9 +1,9 @@
 {
-  "version": "V2.0.1-demo",
+  "version": "V2.0.2-demo",
   "source_revision": "r2.2_quality_20261025",
   "source_batch": "R4_continuation_live",
   "completed_at": "2026-10-26T01:57:27+08:00",
-  "scope": "Private development batch aggregate; public synthetic demo is separate. Not an accuracy claim.",
+  "scope": "Historical R4 aggregate below; latest real R5/R6 results are separately retained under new_api_real_revalidation. Public synthetic demo is not model accuracy.",
   "requests_including_smoke": 8,
   "formal_cases": 7,
   "smoke_cases": 1,
@@ -39,5 +39,114 @@
     "ellipsis used inside purported literal quote",
     "dated claim missing citation to supplied date sentence",
     "support status misclassified"
-  ]
+  ],
+  "new_api_real_revalidation": {
+    "schema": "rag_public_new_service_rounds_independent_review_v1",
+    "review_date": "2026-10-27",
+    "scope": "Seven fixed known development questions per batch; no held-out or production accuracy claim.",
+    "new_service_version": "0.32.3",
+    "old_service_version": "0.20.0",
+    "same_model_digest": true,
+    "round_R5": {
+      "candidate": "r2.3",
+      "requests_including_smoke": 8,
+      "formal_cases": 7,
+      "native_terminal": 8,
+      "mechanical_clean": {
+        "passed": 2,
+        "total": 7
+      },
+      "independent_core_required": {
+        "passed": 4,
+        "total": 7
+      },
+      "independent_frozen_contract_strict": {
+        "passed": 2,
+        "total": 7
+      },
+      "input_tokens": 15940,
+      "output_tokens": 4043,
+      "total_tokens": 19983,
+      "client_seconds": 112.549,
+      "native_seconds": 111.745642646,
+      "native_load_seconds_included": 7.976560068,
+      "historical_score_unchanged": true
+    },
+    "round_R6": {
+      "candidate": "r2.4",
+      "executed_manifest_sha256": "db4c6f0c6048f8a80b4914f69a91cfd10be6183e62ab2b7421387acba6076d6b",
+      "requests_including_smoke": 8,
+      "formal_cases": 7,
+      "native_terminal": 8,
+      "automatic_retry": 0,
+      "truncated_requests": 0,
+      "mechanical_clean": {
+        "passed": 3,
+        "total": 7
+      },
+      "independent_core_required": {
+        "passed": 6,
+        "total": 7
+      },
+      "independent_frozen_contract_strict": {
+        "passed": 2,
+        "total": 7
+      },
+      "input_tokens": 19508,
+      "output_tokens": 4518,
+      "total_tokens": 24026,
+      "client_seconds": 133.296,
+      "native_seconds": 132.604093663,
+      "native_load_seconds_included": 16.039727798,
+      "formal": {
+        "requests": 7,
+        "input_tokens": 17323,
+        "output_tokens": 3987,
+        "client_seconds": 110.984,
+        "native_seconds": 110.381002971
+      },
+      "smoke": {
+        "requests": 1,
+        "input_tokens": 2185,
+        "output_tokens": 531,
+        "client_seconds": 22.312,
+        "native_seconds": 22.223090692
+      },
+      "resource_options": {
+        "num_ctx": 16384,
+        "num_predict": 2000
+      },
+      "changes": [
+        "Complete synthetic behavioral example",
+        "Removed arbitrary content-length restrictions",
+        "Exact same-source continuous quote with complete model-visible coverage",
+        "Expanded physical input/output allocation"
+      ],
+      "remaining_substantive_failures": [
+        "Unsupported assertion that two related website reports concern distinct real-world objects",
+        "Extra source-specific factual assertion without a matching citation",
+        "Separate source passages concatenated into a purported continuous quote"
+      ],
+      "technical_or_binding_limits": [
+        "Correct publication-date fact represented in a project-event date field",
+        "Conditional claim omits a direct project anchor in its own cited statements",
+        "Confirmed negation-scope false positive; corrected only in a separate diagnostic candidate with no regeneration"
+      ],
+      "score_policy": "Original raw outputs and executed-contract scores remain frozen. Diagnostic or contract replay is not a new model accuracy score.",
+      "not_pure_prompt_causal_effect": true
+    },
+    "new_service_total": {
+      "generation_requests": 16,
+      "input_tokens": 35448,
+      "output_tokens": 8561,
+      "total_tokens": 44009,
+      "client_seconds": 245.845
+    },
+    "reviewer_model_calls": 0,
+    "money_cost": null,
+    "privacy": "Aggregate metrics and failure categories only; no private source text, company data, endpoint or credential included."
+  },
+  "latest_real_result": "new_api_real_revalidation.round_R6",
+  "model": "qwen3.6:27b",
+  "model_digest": "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e"
 }

@@ -91,7 +91,7 @@ def _dates(text: str) -> list[list[str]]:
     return _shared_module("date_roles").extract_literal_dates(text)
 
 
-def _quote_limit() -> int:
+def _quote_limit() -> int | None:
     """Read the contractual quote length from the single schema source.
 
     Length is a contract fact, not a checker constant. The fallback keeps the
@@ -99,9 +99,9 @@ def _quote_limit() -> int:
     """
     try:
         mod = _shared_module("contract")
-        return int(mod.SCHEMA["$defs"]["statement"]["properties"]["quote"]["maxLength"])
+        return mod.SCHEMA["$defs"]["statement"]["properties"]["quote"].get("maxLength")
     except Exception:
-        return 64
+        return None
 
 
 def _schema_event_states() -> set[str]:
@@ -649,7 +649,10 @@ def _action_facts(text: str):
         before = text[left:m.start()]
         after = text[m.end():right]
         action = _ACTION_CANON.get(m.group(), m.group())
-        if _NEGATION.search(before[-45:]):
+        # Narrow observed contrast scope: "而非已投产" denies this exact
+        # commissioning predicate. Do not waive later affirmative predicates.
+        direct_contrast_denial = action == "投产" and re.search(r"而非已\s*$", before) is not None
+        if _NEGATION.search(before[-45:]) or direct_contrast_denial:
             state = "negated"
         elif re.search(r"完成后|建成后|投产后|若|如果|一旦|随着", before[-45:]) or re.match(r"后", after):
             state = "conditional"
@@ -886,74 +889,31 @@ def evaluate_model_answer(answer_obj, prompt, full=None):
             limit = _quote_limit()
             rec["quote_chars"] = len(quote)
             rec["quote_limit"] = limit
-            if len(quote) > limit:
+            if limit is not None and len(quote) > limit:
                 add("quote_exceeds_contract_length", LOCUS_CANONICAL, ADVISORY,
                     statement_id=sid, source_id=source, length=len(quote), limit=limit,
                     detail="length violation recorded separately from literal match, position and support")
             rec["valid"] = bool(rec["locations"])
             rec["kind"] = "title" if source.endswith("#title") else "body"
-            if not rec["valid"] and base in full_by_source:
-                # A quotation may be verbatim in the provided source while the
-                # supplied card projection is shorter. That is a selection-window
-                # gap, never a fabricated quotation. It stays distinct from text
-                # that only exists by concatenating two or more supplied cards,
-                # which the contract forbids.
-                fallback = []
-                informational = 0
-                for registry_index, r in enumerate(full_by_source.get(base, [])):
-                    consistent_row = len(r[3]) == r[2]-r[1]
-                    for pos in _occurrences(r[3], quote):
-                        extended = _local_context(r[3], pos, pos+len(quote))
-                        if consistent_row:
-                            a, b = r[1]+pos, r[1]+pos+len(quote)
-                            # Cards whose declared region OVERLAPS the quote
-                            # interval. Two or more overlapping cards means the
-                            # text only exists by crossing a card boundary,
-                            # which is a splice and stays blocking. Containment
-                            # is not the right test: a straddling quote is
-                            # contained by none of them. Title and publication
-                            # segments are excluded: they are metadata with
-                            # their own zero-based coordinate space, not
-                            # positions in the source text, so counting them
-                            # would turn a single windowed quotation into a
-                            # false splice.
-                            overlapping = [s for s in segments
-                                           if _base_source(s["src"]) == base
-                                           and not s["src"].endswith(("#title", "#publication"))
-                                           and isinstance(s.get("start"), int)
-                                           and isinstance(s.get("end"), int)
-                                           and s["start"] < b and a < s["end"]]
-                            card_span_count = len(overlapping)
-                            fallback.append({"source_id": source,
-                                             "start": a, "end": b,
-                                             "offset_space": "provided_source",
-                                             "original_coordinates_verified": True,
-                                             "registry_index": registry_index,
-                                             "overlapping_card_count": card_span_count})
-                            if card_span_count >= 2:
-                                informational += 1
-                        else:
-                            informational += 1
-                        key = ("source", a if consistent_row else None, pos)
-                        occurrence_contexts.setdefault(key, set()).add(extended)
-                        if extended not in rec["source_contexts"]:
-                            rec["source_contexts"].append(extended)
-                        if extended not in rec["contexts"]:
-                            rec["contexts"].append(extended)
-                clean = [x for x in fallback if x.get("overlapping_card_count", 0) <= 1]
-                if clean:
-                    rec["locations"] = clean
-                    rec["valid"] = True
-                    rec["literal_basis"] = "provided_source_only"
-                    add("quote_literal_in_provided_source_but_absent_from_supplied_card",
-                        LOCUS_CANONICAL, ADVISORY, statement_id=sid, source_id=source,
-                        length=len(quote), locations=len(clean),
-                        detail="verbatim in provided source inside one card's declared region; not a not_literal finding")
-                elif fallback and informational:
-                    rec["full_source_candidates"] = fallback[:8]
-                rec["registry_scan_hits"] = len(fallback) + informational
             if not rec["valid"]:
-                add("quote_not_literal_in_supplied_source", statement_id=sid, source_id=source, quote=quote)
+                visible = _shared_module("visible_quotes").locate_visible_union(source, quote, segments, full_rows)
+                for hit in visible:
+                    rec["locations"].append(dict(hit, original_coordinates_verified=True, offset_space="provided_source"))
+                    rec["literal_basis"] = "provided_source_and_contiguous_visible_cards"
+                    r = full_rows[hit["registry_index"]]
+                    extended = _local_context(r[3], hit["start"]-r[1], hit["end"]-r[1])
+                    rec["contexts"].append(quote)
+                    rec["source_contexts"].append(extended)
+                    occurrence_contexts.setdefault(("source",hit["start"]),set()).add(extended)
+                rec["valid"] = bool(rec["locations"])
+            if not rec["valid"]:
+                source_hits = [r for r in full_by_source.get(base,[]) if quote in r[3]]
+                rec["literal_in_provided_source"] = bool(source_hits)
+                rec["registry_scan_hits"] = sum(r[3].count(quote) for r in source_hits)
+                rec["model_visible_coverage_complete"] = False
+                add("quote_literal_but_not_fully_visible" if source_hits else "quote_not_literal_in_supplied_source",
+                    statement_id=sid, source_id=source, quote=quote,
+                    detail="source-only location does not prove this request supplied every character" if source_hits else "")
             elif len(occurrence_contexts) > 1:
                 # Local and extended context for ONE occurrence are not two
                 # occurrences. Compare only genuine location candidates.

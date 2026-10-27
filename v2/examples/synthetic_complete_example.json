@@ -1,0 +1,96 @@
+{
+  "input": {
+    "question": "虚构甲项目是否已投产、开工何时、文章何时发表？",
+    "cards": [
+      {
+        "id": "K1",
+        "src": "SX",
+        "start": 0,
+        "end": 17,
+        "text": "虚构甲项目于4月6日举行开工仪式。"
+      },
+      {
+        "id": "K2",
+        "src": "SX",
+        "start": 17,
+        "end": 31,
+        "text": "虚构甲项目投产后将提高产能。"
+      }
+    ],
+    "publication": {
+      "SX": {
+        "published_at": "2035/4/7 09:20",
+        "value": "2035-04-07",
+        "role": "publication_time_not_event_time",
+        "model_generated": false
+      }
+    },
+    "sources": {
+      "SX": {
+        "title": "虚构项目进展",
+        "folder": "虚构目录"
+      }
+    }
+  },
+  "output": {
+    "answer_support": "evidence_supported",
+    "answer": "不能确认已投产；原文只述4月6日开工及投产后效益预期。文章发表于2035年4月7日；事件年份未知。",
+    "source_statement": [
+      {
+        "id": "E1",
+        "source_id": "SX",
+        "quote": "虚构甲项目于4月6日举行开工仪式。",
+        "source_state": "source_reported_completed"
+      },
+      {
+        "id": "E2",
+        "source_id": "SX",
+        "quote": "虚构甲项目投产后将提高产能。",
+        "source_state": "source_conditional"
+      },
+      {
+        "id": "E3",
+        "source_id": "SX#publication",
+        "quote": "2035/4/7 09:20",
+        "source_state": "source_unknown"
+      }
+    ],
+    "claims": [
+      {
+        "id": "C1",
+        "subject": "虚构甲项目",
+        "project_identity": "虚构甲项目",
+        "event_state": "event_construction_started",
+        "source_statement": [
+          "E1"
+        ],
+        "explicit_event_date": {
+          "value": "04-06",
+          "precision": "month_day",
+          "evidence": [
+            "E1"
+          ]
+        },
+        "inferred_event_date": null
+      },
+      {
+        "id": "C2",
+        "subject": "虚构甲项目",
+        "project_identity": "虚构甲项目",
+        "event_state": "event_conditional",
+        "source_statement": [
+          "E2"
+        ],
+        "explicit_event_date": {
+          "value": null,
+          "precision": "unknown",
+          "evidence": []
+        },
+        "inferred_event_date": null
+      }
+    ],
+    "uncertainties": [
+      "事件年份和实际投产状态未确认。"
+    ]
+  }
+}

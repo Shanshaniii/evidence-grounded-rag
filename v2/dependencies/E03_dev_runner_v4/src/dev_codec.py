@@ -71,7 +71,8 @@ def collect(outcome,folder,payload,stage,arm,token='',mode='fixture',*,answer_va
  if outcome['http_status']!=200 or (outcome['response_headers'].get('Content-Type') or '').split(';')[0].lower().strip()!='application/json':
   r.update(error_code='http_or_content_type_invalid',stop='none' if terminal else 'pause');return r
  usage=r['usage'] or {}
- if usage.get('prompt_eval_count',0)>8192 or usage.get('eval_count',0)>1000 or usage.get('prompt_eval_count',0)+1000>12288:
+ options=payload.get('options') or {}; output_budget=options.get('num_predict',1000); context_budget=options.get('num_ctx',12288)
+ if usage.get('prompt_eval_count',0)+output_budget>context_budget or usage.get('eval_count',0)>output_budget:
   r.update(error_class='budget_violation',error_code='observed_token_budget_exceeded',stop='hard');return r
  status=decoded['technical_status'];code=decoded.get('error_code')
  if status=='model_mismatch': r.update(error_class='data_anomaly',error_code=code,stop='hard');return r

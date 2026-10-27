@@ -160,44 +160,30 @@ class LongQuoteControls(unittest.TestCase):
                        'text': self.LONG[:window], 'role': 'body'}]
         return a, p, f
 
-    def test_long_quote_verbatim_but_outside_card_window_is_advisory(self):
+    def test_long_source_only_quote_is_not_model_visible(self):
         a, p, f = self._windowed()
-        report = C.evaluate_model_answer(a, p, f)
-        self.assertGreater(len(self.LONG), C._quote_limit())
-        # Length is its own axis, reported advisory.
-        self.assertIn('quote_exceeds_contract_length', codes(report, severity='advisory'))
-        # The contract limit is still enforced -- the length violation is not
-        # hidden, it is just no longer misreported as fabrication.
-        self.assertIn('answer_schema_invalid', codes(report))
-        self.assertEqual(report['schema_errors'], [{'path': '$.source_statement[0].quote', 'code': 'length'}])
-        # The quote is verbatim in the supplied source, so it is NOT fabricated.
-        self.assertNotIn('quote_not_literal_in_supplied_source', codes(report))
-        citation = report['branches']['citations'][0]
-        self.assertTrue(citation['valid'])
-        self.assertEqual(citation['literal_basis'], 'provided_source_only')
-        self.assertEqual(len(citation['locations']), 1)
-
-    def test_long_quote_spliced_across_two_adjacent_cards_is_still_not_literal(self):
-        a, p, f = self._windowed()
-        split = 40
-        p['cards'] = [{'id': 'K1', 'src': 'S1', 'start': 0, 'end': split,
-                       'text': self.LONG[:split], 'role': 'body'},
-                      {'id': 'K2', 'src': 'S1', 'start': split, 'end': len(self.LONG),
-                       'text': self.LONG[split:], 'role': 'body'}]
-        report = C.evaluate_model_answer(a, p, f)
-        # Crossing a card boundary is a splice and must not be blessed by the
-        # provided-source fallback, even when the quote is verbatim there.
-        self.assertIn('quote_not_literal_in_supplied_source', codes(report, severity='blocking'))
-        self.assertNotIn('quote_literal_in_provided_source_but_absent_from_supplied_card',
-                         codes(report))
+        report = C.evaluate_model_answer(a,p,f)
+        self.assertIsNone(C._quote_limit())
+        self.assertNotIn('answer_schema_invalid',codes(report))
+        self.assertIn('quote_literal_but_not_fully_visible',codes(report,severity='blocking'))
+        self.assertNotIn('quote_not_literal_in_supplied_source',codes(report))
         self.assertFalse(report['branches']['citations'][0]['valid'])
+
+    def test_continuous_adjacent_cards_are_visible_union_not_splice(self):
+        a,p,f=self._windowed();split=40
+        p['cards']=[{'id':'K1','src':'S1','start':0,'end':split,'text':self.LONG[:split]},
+                    {'id':'K2','src':'S1','start':split,'end':len(self.LONG),'text':self.LONG[split:]}]
+        report=C.evaluate_model_answer(a,p,f)
+        self.assertNotIn('quote_not_literal_in_supplied_source',codes(report))
+        self.assertTrue(report['branches']['citations'][0]['valid'])
+        self.assertEqual(report['branches']['citations'][0]['literal_basis'],'provided_source_and_contiguous_visible_cards')
 
     def test_long_quote_that_is_fabricated_is_still_not_literal(self):
         a, p, f = fixture()
         fabricated = ('甲公司项目A已完成全部建设工作并投入生产运营，一期产能全面释放，'
                       '年产能力达到设计水平的百分之百，且已通过客户验收合格，'
                       '后续二期工程也已完成设备调试')
-        self.assertGreater(len(fabricated), C._quote_limit())
+        self.assertGreater(len(fabricated), 64)  # historical threshold only, not a new content maximum
         a['source_statement'][0]['quote'] = fabricated
         a['answer'] = '项目A已投产。'
         report = C.evaluate_model_answer(a, p, f)

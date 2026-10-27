@@ -54,7 +54,7 @@ def answer_error(o):
  return None
 
 
-def locate_supplied(source_id, quote, sources, cards, full_registry=None, max_chars=64, publication=None):
+def locate_supplied(source_id, quote, sources, cards, full_registry=None, max_chars=None, publication=None):
  """Exact quotation in supplied cards, with honest local/global coordinate scope.
 
  The uploaded registry can contain gaps and redacted, length-changing strings.
@@ -120,6 +120,11 @@ def locate_supplied(source_id, quote, sources, cards, full_registry=None, max_ch
    key=(source_id,span.get('start'),span.get('end')) if span['source_coordinate_verified'] else (source_id,index,pos,local_end)
    if key not in seen:candidates.append(span);seen.add(key)
    pos+=1
+ from visible_quotes import locate_visible_union
+ for hit in locate_visible_union(source_id,quote,cards,full_registry):
+  key=(source_id,hit['start'],hit['end'])
+  if key not in seen:
+   candidates.append(dict(hit,article_id=out['article_id'],quote=quote,kind='body',field='body'));seen.add(key)
  out['candidates']=candidates
  # Independent of the supplied-card scope: is this text verbatim anywhere in the
  # provided source registry? This keeps "not in one supplied card" distinct from

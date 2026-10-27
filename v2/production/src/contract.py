@@ -63,6 +63,6 @@ def prompt_contract():
   raw=s;s=resolve(s)
   if 'enum' in s:return '['+','.join(s['enum'])+']'
   if s['type']=='object' or isinstance(s['type'],list) and 'object' in s['type']:return ('null|' if isinstance(s['type'],list) else '')+'{'+','.join(k+':'+show(v) for k,v in s['properties'].items())+'}'
-  if s['type']=='array':return '['+show(s['items'])+']<='+str(s['maxItems'])
+  if s['type']=='array':return '['+show(s['items'])+']'+('<= '+str(s['maxItems']) if 'maxItems' in s else '')
   return ('str' if s['type']=='string' else 'null|str' if s['type']==['null','string'] else 'bool')+(f"({s.get('minLength',0)}..{s['maxLength']})" if 'maxLength' in s else '')
  return '仅JSON，键全必需，无额外键；字符限按Unicode码点。'+show(SCHEMA)

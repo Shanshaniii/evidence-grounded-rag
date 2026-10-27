@@ -141,14 +141,14 @@ def evaluate(raw,payload,source_context=None):
    if not isinstance(s,dict):
     loc_findings.append({'index':i,'status':'not_run','reason':'statement_not_object'});continue
    loc=locator.locate_supplied(s.get('source_id'),s.get('quote'),sources,cards,full_registry,
-                              SCHEMA['$defs']['statement']['properties']['quote']['maxLength'],publication=b.get('publication',{}))
+                              SCHEMA['$defs']['statement']['properties']['quote'].get('maxLength'),publication=b.get('publication',{}))
    row={'statement_index':i,'statement_id':s.get('id'),'statement_original':copy.deepcopy(s),'location':loc}
    out['program_locations'].append(row)
    if bool(loc.get('quote_length_contract_exceeded')):
     out['warnings'].append({'code':'quote_exceeds_contract_length','index':i,'locus':'canonical_object','severity':'advisory','quote_chars':loc.get('quote_chars'),'quote_limit':loc.get('quote_limit'),'matched_in_supplied_source':bool(loc.get('supplied_context_valid')),'reason':loc['reason'],'note':'length recorded separately from literal match, position and support'})
    if not loc['supplied_context_valid']:
     if loc.get('verbatim_in_provided_source_registry') is True:
-     out['risk_findings'].append({'code':'quote_not_within_single_supplied_card','index':i,'locus':'canonical_object','severity':'blocking','reason':loc['reason'],'quote_chars':loc.get('quote_chars'),'quote_limit':loc.get('quote_limit'),'note':'verbatim in the provided source but not continuous within one supplied card; reported as a scope contract violation, not as a literal or forgery failure'})
+     out['risk_findings'].append({'code':'quote_not_fully_covered_by_supplied_cards','index':i,'locus':'canonical_object','severity':'blocking','reason':loc['reason'],'quote_chars':loc.get('quote_chars'),'quote_limit':loc.get('quote_limit'),'note':'verbatim in the provided source but not fully covered by the supplied-card union; reported as a scope contract violation, not as a literal or forgery failure'})
     else:
      out['risk_findings'].append({'code':'quote_not_grounded_in_supplied_source','index':i,'locus':'canonical_object','severity':'blocking','reason':loc['reason'],'quote_chars':loc.get('quote_chars'),'quote_limit':loc.get('quote_limit')})
    elif loc['status']=='ambiguous':

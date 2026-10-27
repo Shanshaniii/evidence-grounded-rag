@@ -15,31 +15,26 @@
     },
     "answer": {
       "type": "string",
-      "minLength": 0,
-      "maxLength": 100
+      "minLength": 0
     },
     "source_statement": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/statement"
-      },
-      "maxItems": 6
+      }
     },
     "claims": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/claim"
-      },
-      "maxItems": 2
+      }
     },
     "uncertainties": {
       "type": "array",
       "items": {
         "type": "string",
-        "minLength": 0,
-        "maxLength": 120
-      },
-      "maxItems": 4
+        "minLength": 0
+      }
     }
   },
   "required": [
@@ -58,18 +53,15 @@
       "properties": {
         "id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 16
+          "minLength": 1
         },
         "source_id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 16
+          "minLength": 1
         },
         "quote": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 64
+          "minLength": 1
         },
         "source_state": {
           "type": "string",
@@ -99,18 +91,15 @@
       "properties": {
         "id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 16
+          "minLength": 1
         },
         "subject": {
           "type": "string",
-          "minLength": 0,
-          "maxLength": 80
+          "minLength": 0
         },
         "project_identity": {
           "type": "string",
-          "minLength": 0,
-          "maxLength": 120
+          "minLength": 0
         },
         "event_state": {
           "type": "string",
@@ -133,10 +122,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "maxItems": 4
+            "minLength": 1
+          }
         },
         "explicit_event_date": {
           "$ref": "#/$defs/explicit_event_date"
@@ -164,8 +151,7 @@
             "null",
             "string"
           ],
-          "minLength": 0,
-          "maxLength": 10
+          "minLength": 0
         },
         "precision": {
           "type": "string",
@@ -180,10 +166,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "maxItems": 4
+            "minLength": 1
+          }
         }
       },
       "required": [
@@ -201,8 +185,7 @@
       "properties": {
         "value": {
           "type": "string",
-          "minLength": 0,
-          "maxLength": 10
+          "minLength": 0
         },
         "rule": {
           "type": "string",
@@ -212,17 +195,14 @@
         },
         "publication_source_id": {
           "type": "string",
-          "minLength": 1,
-          "maxLength": 16
+          "minLength": 1
         },
         "evidence": {
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "maxItems": 4
+            "minLength": 1
+          }
         },
         "uncertain": {
           "type": "boolean"
@@ -243,5 +223,6 @@
     "aliases": "three syntax-only aliases restored from verified local original schema",
     "model_fields_unchanged": true,
     "local_original_schema_sha256": "f95e9c46986c738ff5acc23c1ce5c73e2b791bee6c08cfacb486d9049ba03465"
-  }
+  },
+  "x-content-policy": "No arbitrary maximum lengths/counts; required/type/enum/minimum-nonempty and source-integrity checks remain. Physical context/output limits separately declared."
 }
