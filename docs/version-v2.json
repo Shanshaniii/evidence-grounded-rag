@@ -1,5 +1,5 @@
 {
-  "version": "V2.0-demo",
+  "version": "V2.0.1-demo",
   "source_revision": "r2.2_quality_20261025",
   "scope": "Portable offline subset of production collector, diagnostics, locator, checker and renderer. Transport/dispatch/private data excluded.",
   "original_core_unchanged": true,
@@ -34,5 +34,6 @@
     "v2/tests/test_results_page.py": "368c37eed775619503266e18f890511f4caa279d4f8509cdedad9c92141ca233",
     "v2/tests/test_semantic_fixes_synthetic.py": "87084a20d541ca91a5958f834b9dc49ca643e04c8125812220c89decf296f5fa"
   },
-  "hash_basis": "File text bytes with CRLF normalized to LF, matching canonical Git text blobs; excludes manifest itself."
+  "hash_basis": "File text bytes with CRLF normalized to LF, matching canonical Git text blobs; excludes manifest itself.",
+  "patch_scope": "Documentation only: add independent retrospective semantic review; production code unchanged from v2.0.0-demo."
 }

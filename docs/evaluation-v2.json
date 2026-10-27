@@ -1,5 +1,5 @@
 {
-  "version": "V2.0-demo",
+  "version": "V2.0.1-demo",
   "source_revision": "r2.2_quality_20261025",
   "source_batch": "R4_continuation_live",
   "completed_at": "2026-10-26T01:57:27+08:00",
@@ -11,7 +11,15 @@
   "communication_errors": 0,
   "formal_mechanical_clean_pending_semantic_review": 2,
   "formal_blocked": 5,
-  "formal_independent_semantic_accuracy": null,
+  "formal_independent_semantic_accuracy": {
+    "review_date": "2026-10-27",
+    "method": "Retrospective independent manual review of original per-request wire, response and source evidence. Seven fixed development cases, no held-out generalization claim.",
+    "core_required_pass": 4,
+    "strict_whole_answer_pass": 1,
+    "total": 7,
+    "strict_definition": "All required subquestions answered, no unsupported years, exact source quotes, closed statement references, correct date bindings and support labels.",
+    "new_model_calls": 0
+  },
   "tokens": {
     "input": 15948,
     "output": 3310,
@@ -22,5 +30,14 @@
   "monetary_cost": null,
   "aggregation": "Sum of 8 original response.safe.json.value token fields and corresponding outcome client timings; overrides inconsistent enriched-summary duration 117.85s.",
   "privacy": "No private source text, per-case original answer, endpoint, credential or audit identity published.",
-  "new_model_calls_for_public_packaging": 0
+  "new_model_calls_for_public_packaging": 0,
+  "semantic_failure_categories": [
+    "required comparison subquestion omitted",
+    "unsupported year added in free text",
+    "raw publication quote replaced with normalized value",
+    "undefined statement ID referenced",
+    "ellipsis used inside purported literal quote",
+    "dated claim missing citation to supplied date sentence",
+    "support status misclassified"
+  ]
 }
